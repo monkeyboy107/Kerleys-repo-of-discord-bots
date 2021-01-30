@@ -1,6 +1,13 @@
 import discord
 import yaml
+import os
 import friends
+import make_zips
+
+try:
+    os.chdir('Auto announcer')
+except:
+    pass
 
 
 def load_yaml(yaml_file):
@@ -12,10 +19,11 @@ def load_yaml(yaml_file):
 class MyClient(discord.Client):
     async def on_ready(self):
         print('Logged on as', self.user)
-        for i in announcements:
-            channel = client.get_channel(load_yaml(settings_file)['channel_ID'])
-            await channel.send(load_yaml(settings_file)['web_link'])
-            await channel.send(load_yaml(settings_file)['message'])
+        print(client.get_channel(load_yaml(announcements[0])['channel_ID']))
+        for public_channel in announcements:
+            channel = client.get_channel(load_yaml(public_channel)['channel_ID'])
+            await channel.send(load_yaml(public_channel)['web_link'])
+            await channel.send(load_yaml(public_channel)['message'])
 
     async def on_message(self, message):
         # don't respond to ourselves
@@ -27,11 +35,15 @@ class MyClient(discord.Client):
             await message.channel.send(load_yaml(settings_file)['message'])
 
 
-
 if '__main__' == __name__:
     settings_file = 'settings.yaml'
-    announcements = []
-    # friends.get_friends(load_yaml(settings_file)['friends_path'])
+    friends_path = load_yaml(settings_file)['friends_path']
+    announcements = friends.get_friends(friends_path)
+    if load_yaml(settings_file['friends_enabled']):
+        announcements.append(settings_file)
+    else:
+        announcements = [settings_file]
+    announcements = announcements[::-1]
 
     token = load_yaml(settings_file)['token']
     client = MyClient()
