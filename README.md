@@ -1,4 +1,4 @@
-# discord-bot
+# auto announcer
 This is a simple little project to help creators get when they are streaming out more easily!
 
 # Requirements
