@@ -16,7 +16,8 @@ def twitch_is_live(url):
     return twitch
 
 def twitch_api(user):
-    url = 'https://api.twitch.tv/kraken/streams/' + user + '?client_id=' + 'wbmytr93xzw8zbg0p1izqyzzc5mbiz'
+    # url = 'https://api.twitch.tv/kraken/streams/' + user + '?client_id=' + ''
+    url = 'https://api.twitch.tv/kraken/streams/' + user + '?client_id=' + ''
     twitch = requests.get(url)
     return twitch.text
 
