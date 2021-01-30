@@ -2,7 +2,6 @@ import discord
 import yaml
 import os
 import friends
-import make_zips
 
 try:
     os.chdir('Auto announcer')
@@ -19,7 +18,8 @@ def load_yaml(yaml_file):
 class MyClient(discord.Client):
     async def on_ready(self):
         print('Logged on as', self.user)
-        print(client.get_channel(load_yaml(announcements[0])['channel_ID']))
+        # print(client.get_channel(load_yaml(announcements[0])['channel_ID']))
+        print(load_yaml(announcements[0])['channel_ID'])
         for public_channel in announcements:
             channel = client.get_channel(load_yaml(public_channel)['channel_ID'])
             await channel.send(load_yaml(public_channel)['web_link'])
@@ -36,12 +36,16 @@ class MyClient(discord.Client):
 
 
 if '__main__' == __name__:
+    print('Started!')
     settings_file = 'settings.yaml'
     friends_path = load_yaml(settings_file)['friends_path']
     announcements = friends.get_friends(friends_path)
-    if load_yaml(settings_file['friends_enabled']):
+    print('Do you haz friends?')
+    if load_yaml(settings_file)['friends_enabled']:
+        print('Yes friends!')
         announcements.append(settings_file)
     else:
+        print('No friends')
         announcements = [settings_file]
     announcements = announcements[::-1]
 
